@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,17 +11,34 @@ public class HomePage extends BasePage{
     public HomePage(WebDriver driver){
         setDriver(driver);
         driver.get("https://telranedu.web.app/home");
-        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), this);
+        PageFactory.initElements(new AjaxElementLocatorFactory
+                (driver, 10), this);
     }
 
     @FindBy(xpath = "//a[text()='LOGIN']")
     WebElement btnLogin;
-
+    @FindBy(xpath = "//form/input[1]")
+    WebElement inputEmail;
 
 
     public void clickBtnLogin(){
         btnLogin.click();
     }
 
+    public void method(){
+        WebElement login = driver.findElement(By
+                .xpath("//a[text()='LOGIN']"));
+        //login.click();
+        WebElement inputEmail = driver.findElement(By
+                .xpath("//form/input[1]"));
+        login.click();
+        inputEmail.sendKeys("dfrgtey@drety.vbg");
+    }
 
+    public void ajaxMethod(){
+        btnLogin.click();
+        inputEmail.sendKeys("fgthyr@cvfgt.bnm");
+    }
 }
+
+
