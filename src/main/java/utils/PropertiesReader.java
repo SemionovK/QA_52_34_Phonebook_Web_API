@@ -8,8 +8,7 @@ import java.util.Properties;
 public class PropertiesReader {
     public static String getProperty(String fileName, String key){
         Properties properties = new Properties();
-        try(FileInputStream fileInputStream = new FileInputStream("src/test/properties"
-                + File.separator + fileName)){
+        try(FileInputStream fileInputStream = new FileInputStream("src/test/properties/base.properties")){
             properties.load(fileInputStream);
             return properties.getProperty(key);
         }catch (IOException e){

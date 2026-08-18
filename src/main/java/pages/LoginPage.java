@@ -19,7 +19,7 @@ public class LoginPage extends BasePage{
     WebElement inputPassword;
     @FindBy(xpath = "//button[@type='submit' and @name='registration']")
     WebElement btnRegistration;
-    @FindBy(css = "//button[text()='Login']")
+    @FindBy(xpath = "//button[text()='Login']")
     WebElement btnLogin;
 
 
@@ -31,5 +31,7 @@ public class LoginPage extends BasePage{
     public void clickBtnRegistration(){
         btnRegistration.click();
     }
+
+    public void clickBtnLogin(){btnLogin.click();}
 
 }
