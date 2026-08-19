@@ -36,6 +36,17 @@ public abstract class BasePage {
         return text;
     }
 
+    public boolean isUrlContainsText(String text){
+        try {
+            return new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.urlContains(text));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 
     public void pause(int time) {
         try {
