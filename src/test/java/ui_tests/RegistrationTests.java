@@ -54,6 +54,7 @@ public class RegistrationTests extends AppManager {
 
 
 
+
 //    @Test
 //    public void registrationNegativeEmptyAllFieldsTest(){
 //        loginPage.clickBtnRegistration();
