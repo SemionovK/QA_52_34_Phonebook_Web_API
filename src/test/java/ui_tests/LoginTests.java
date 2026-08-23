@@ -1,5 +1,6 @@
 package ui_tests;
 
+import data_providers.UserDataProvider;
 import dto.UserLombok;
 import manager.AppManager;
 import org.testng.Assert;
@@ -37,24 +38,33 @@ public class LoginTests extends AppManager {
         softAssert.assertAll();
     }
 
-    @Test
-    public void loginNegativeWithWrongPasswordTest(){
-        UserLombok user = UserLombok.builder()
-                .username(getProperty("base.properties", "username"))
-                .password(getProperty("base.properties", "wrongPswForLogin"))
-                .build();
+
+    @Test(dataProvider = "wrongLoginData", dataProviderClass = UserDataProvider.class)
+    public void loginNegativeTest(UserLombok user) {
         loginPage.typeLoginRegistrationForm(user);
         loginPage.clickBtnLogin();
-        Assert.assertTrue(loginPage.closeAlert()
-                .contains("Wrong email or password"));
+        Assert.assertTrue(loginPage.closeAlert().contains("Wrong email or password"));
     }
-
-    @Test
-    public void loginNegativeAllFieldsEmptyWOTypeFormTest(){
-        loginPage.clickBtnLogin();
-        //Assert.assertTrue(loginPage.closeAlert().contains("Wrong email or password"));
-        Assert.assertEquals(loginPage.closeAlert(), "Wrong email or password");
-    }
-
-
 }
+
+//    @Test
+//    public void loginNegativeWithWrongPasswordTest(){
+//        UserLombok user = UserLombok.builder()
+//                .username(getProperty("base.properties", "username"))
+//                .password(getProperty("base.properties", "wrongPswForLogin"))
+//                .build();
+//        loginPage.typeLoginRegistrationForm(user);
+//        loginPage.clickBtnLogin();
+//        Assert.assertTrue(loginPage.closeAlert()
+//                .contains("Wrong email or password"));
+//    }
+//
+//    @Test
+//    public void loginNegativeAllFieldsEmptyWOTypeFormTest(){
+//        loginPage.clickBtnLogin();
+//        //Assert.assertTrue(loginPage.closeAlert().contains("Wrong email or password"));
+//        Assert.assertEquals(loginPage.closeAlert(), "Wrong email or password");
+//    }
+
+
+//}

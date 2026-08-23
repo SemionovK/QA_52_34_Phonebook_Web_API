@@ -10,25 +10,66 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
 public class UserDataProvider {
     @DataProvider
-    public Iterator<UserLombok> dataProviderWrongPasswordOrEmail(){
+    public Iterator<UserLombok> wrongLoginData() {
+        return getUsersFromCsv(
+                "src/test/resources/wrong_login.csv"
+        );
+    }
+    @DataProvider
+    public Iterator<UserLombok> wrongRegistrationData() {
+        return getUsersFromCsv(
+                "src/test/resources/wrong_registration.csv"
+        );
+    }
+
+    private Iterator<UserLombok> getUsersFromCsv(String path) {
         List<UserLombok> list = new ArrayList<>();
-        try(BufferedReader bufferedReader =new BufferedReader(new FileReader
-                ("src/test/resources/wrong_email_password.csv"))){
+        try (BufferedReader bufferedReader =
+                        new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();
-            while (line !=null){
-                String[] splitLine = line.split(",");
-                list.add(UserLombok.builder()
+            while (line != null) {
+                System.out.println("CSV line: [" + line + "]");
+                String[] splitLine = line.split(",", -1);
+                list.add(
+                        UserLombok.builder()
                                 .username(splitLine[0])
                                 .password(splitLine[1])
-                                .build());
+                                .build()
+                );
                 line = bufferedReader.readLine();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("created exception");
         }
-        return list.listIterator();
+
+        return list.iterator();
     }
 }
+
+
+//
+//public class UserDataProvider {
+//    @DataProvider
+//    public Iterator<UserLombok> dataProviderWrongPasswordOrEmail(){
+//        List<UserLombok> list = new ArrayList<>();
+//        try(BufferedReader bufferedReader =new BufferedReader(new FileReader
+//                ("src/test/resources/wrong_email_password.csv"))){
+//            String line = bufferedReader.readLine();
+//            while (line !=null){
+//                String[] splitLine = line.split(",", -1);
+//                list.add(UserLombok.builder()
+//                                .username(splitLine[0])
+//                                .password(splitLine[1])
+//                                .build());
+//                line = bufferedReader.readLine();
+//            }
+//        } catch (IOException e){
+//            e.printStackTrace();
+//            System.out.println("created exception");
+//        }
+//        return list.listIterator();
+//    }
+//}
