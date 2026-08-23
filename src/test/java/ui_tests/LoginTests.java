@@ -12,8 +12,6 @@ import pages.HomePage;
 import pages.LoginPage;
 import static utils.PropertiesReader.*;
 
-import static utils.PropertiesReader.getProperty;
-
 public class LoginTests extends AppManager {
     LoginPage loginPage;
     SoftAssert softAssert = new SoftAssert();
