@@ -31,7 +31,6 @@ public class UserDataProvider {
                         new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();
             while (line != null) {
-                System.out.println("CSV line: [" + line + "]");
                 String[] splitLine = line.split(",", -1);
                 list.add(
                         UserLombok.builder()
