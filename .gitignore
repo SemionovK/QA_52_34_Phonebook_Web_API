@@ -17,6 +17,7 @@ out/
 !**/src/test/**/out/
 src/test/properties
 src/test/resources/test_logs
+src/test/resources/screenshots
 
 ### Eclipse ###
 .apt_generated
