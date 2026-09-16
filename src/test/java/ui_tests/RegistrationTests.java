@@ -20,7 +20,7 @@ import java.util.Random;
 public class RegistrationTests extends AppManager {
     LoginPage loginPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void goToRegistrationLoginPage() {
         logger.info("Start registration test");
         new HomePage(getDriver()).clickBtnLogin();
@@ -40,7 +40,7 @@ public class RegistrationTests extends AppManager {
                 .validateTextInMessageNoContacts("No Contacts here!"));
     }
 
-    @Test
+    @Test(groups = "smoke")
     public void registrationPositiveWithFakerTest() {
         UserLombok user = positiveUser();
         System.out.println(user);
