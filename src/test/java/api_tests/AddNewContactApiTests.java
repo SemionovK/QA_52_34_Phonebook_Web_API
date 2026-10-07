@@ -75,4 +75,39 @@ public class AddNewContactApiTests implements BaseApi, ILogin {
         softAssert.assertTrue(responseMessageDto.getMessage().contains("Contact was added!"), "validate message");
         softAssert.assertAll();
     }
+
+    @Test
+    public void addNewContactWrongTokenNegativeTest(){
+        ContactDto contact = positiveContact();
+        RequestBody requestBody = RequestBody.create(GSON.toJson(contact), JSON);
+        Request request = new Request.Builder()
+                .url(BASE_URL+ADD_CONTACT)
+                .addHeader(AUTH, "tokenDto.getToken()") // <-
+                .post(requestBody)
+                .build();
+        Response response;
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+        Assert.assertEquals(response.code(), 401);
+    }
+
+    @Test
+    public void addNewContactWithoutTokenNegativeTest(){
+        ContactDto contact = positiveContact();
+        RequestBody requestBody = RequestBody.create(GSON.toJson(contact), JSON);
+        Request request = new Request.Builder()
+                .url(BASE_URL+ADD_CONTACT)
+                .post(requestBody)
+                .build();
+        Response response;
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+        Assert.assertEquals(response.code(), 403);
+    }
 }

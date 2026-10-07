@@ -11,6 +11,9 @@ import utils.BaseApi;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import static utils.UserFactory.*;
 import static utils.PropertiesReader.*;
 
@@ -87,6 +90,22 @@ public class RegistrationLoginAPITests implements BaseApi {
         Assert.assertEquals(response.code(), 500);
     }
 
+    @Test
+    public void registrationApiWrongTypeOfRequestNegativeTest() {
+        Request request = new Request.Builder()
+                .url(BASE_URL + REGISTRATION_URL)
+                .get()
+                .build();
+        Response response;
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(response);
+        Assert.assertEquals(response.code(), 403);
+    }
+
 
     @Test(dataProvider = "wrongRegistrationData", dataProviderClass = UserDataProvider.class)
     public void registrationApiNegativeTest(UserLombok user) {
@@ -107,7 +126,7 @@ public class RegistrationLoginAPITests implements BaseApi {
     @Test
     public void loginApiPositiveTest(){
         UserLombok user = UserLombok.builder()
-                .username(getProperty("base.properties", "email"))
+                .username(getProperty("base.properties", "username"))
                 .password(getProperty("base.properties", "password"))
                 .build();
         RequestBody requestBody = RequestBody.create(GSON.toJson(user), JSON);
@@ -127,7 +146,7 @@ public class RegistrationLoginAPITests implements BaseApi {
     @Test
     public void loginApiWrongPasswordNegativeTest(){
         UserLombok user = UserLombok.builder()
-                .username(getProperty("base.properties", "email"))
+                .username(getProperty("base.properties", "username"))
                 .password("password11")
                 .build();
         RequestBody requestBody = RequestBody.create(GSON.toJson(user), JSON);
@@ -154,6 +173,28 @@ public class RegistrationLoginAPITests implements BaseApi {
                 .build();
         try (Response response = OK_HTTP_CLIENT.newCall(request).execute()) {
             Assert.assertEquals(response.code(), 401);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void loginApiWrongKeyNegativeTest() {
+        UserLombok user = UserLombok.builder()
+                .username(getProperty("base.properties", "email"))  // <- wrong key (email)
+                .password(getProperty("base.properties", "password"))
+                .build();
+        Map<String, String> invalidJson = new HashMap<>();
+        invalidJson.put("email", user.getUsername());
+        invalidJson.put("password", user.getPassword());
+
+        RequestBody requestBody = RequestBody.create(GSON.toJson(user), JSON);
+        Request request = new Request.Builder()
+                .url(BASE_URL + LOGIN_URL)
+                .post(requestBody)
+                .build();
+        try (Response response = OK_HTTP_CLIENT.newCall(request).execute()) {
+            Assert.assertEquals(response.code(), 500);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
