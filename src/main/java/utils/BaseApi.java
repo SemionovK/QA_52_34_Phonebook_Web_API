@@ -8,10 +8,11 @@ public interface BaseApi {
     String BASE_URL = "https://contactapp-telran-backend.herokuapp.com";
     String REGISTRATION_URL = "/v1/user/registration/usernamepassword";
     String LOGIN_URL = "/v1/user/login/usernamepassword";
+    String ADD_CONTACT = "/v1/contacts";
 
     MediaType JSON = MediaType.get("application/json");
     OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
-    String AUT = "Authorization";
+    String AUTH = "Authorization";
     Gson GSON = new Gson();
     MediaType TEXT = MediaType.get("text/plain");
 }

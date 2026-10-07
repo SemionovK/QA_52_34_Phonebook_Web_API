@@ -29,6 +29,7 @@ public class RegistrationLoginAPITests implements BaseApi {
         } catch (IOException e){
             throw new RuntimeException(e);
         }
+        System.out.println(response);
         Assert.assertEquals(response.code(), 200);
     }
 
