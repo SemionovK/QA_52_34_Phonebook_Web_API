@@ -1,5 +1,6 @@
 package api_tests;
 
+import data_providers.UserDataProvider;
 import dto.UserLombok;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -86,6 +87,23 @@ public class RegistrationLoginAPITests implements BaseApi {
         Assert.assertEquals(response.code(), 500);
     }
 
+
+    @Test(dataProvider = "wrongRegistrationData", dataProviderClass = UserDataProvider.class)
+    public void registrationApiNegativeTest(UserLombok user) {
+        RequestBody requestBody = RequestBody.create(GSON.toJson(user), JSON);
+        Request request = new Request.Builder()
+                .url(BASE_URL + REGISTRATION_URL)
+                .post(requestBody)
+                .build();
+        Response response;
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Assert.assertEquals(response.code(), 400);
+    }
+
     @Test
     public void loginApiPositiveTest(){
         UserLombok user = UserLombok.builder()
@@ -124,6 +142,21 @@ public class RegistrationLoginAPITests implements BaseApi {
             throw new RuntimeException(e);
         }
         Assert.assertEquals(response.code(), 401);
+    }
+
+
+    @Test(dataProvider = "wrongLoginData", dataProviderClass = UserDataProvider.class)
+    public void loginApiNegativeTest(UserLombok user) {
+        RequestBody requestBody = RequestBody.create(GSON.toJson(user), JSON);
+        Request request = new Request.Builder()
+                .url(BASE_URL + LOGIN_URL)
+                .post(requestBody)
+                .build();
+        try (Response response = OK_HTTP_CLIENT.newCall(request).execute()) {
+            Assert.assertEquals(response.code(), 401);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
