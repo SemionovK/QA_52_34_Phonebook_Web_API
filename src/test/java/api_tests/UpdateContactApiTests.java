@@ -1,5 +1,8 @@
 package api_tests;
 
+import com.google.gson.Gson;
+import data_providers.ContactDataProvider;
+import data_providers.UserDataProvider;
 import dto.ContactDto;
 import dto.TokenDto;
 import okhttp3.Request;

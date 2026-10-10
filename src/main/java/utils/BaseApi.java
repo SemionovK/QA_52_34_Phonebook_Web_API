@@ -9,6 +9,7 @@ public interface BaseApi {
     String REGISTRATION_URL = "/v1/user/registration/usernamepassword";
     String LOGIN_URL = "/v1/user/login/usernamepassword";
     String ADD_CONTACT = "/v1/contacts";
+    String ADD_CONTACT_WRONG_LINK = "/v1/contactss";
     String GET_ALL_CONTACTS = "/v1/contacts";
     String PUT_CONTACT = "/v1/contacts";
 

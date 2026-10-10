@@ -1,5 +1,6 @@
 package api_tests;
 
+import data_providers.ContactDataProvider;
 import dto.ContactDto;
 import dto.ResponseMessageDto;
 import dto.TokenDto;
@@ -13,7 +14,6 @@ import org.testng.asserts.SoftAssert;
 import utils.BaseApi;
 import utils.ILogin;
 
-import java.awt.geom.RectangularShape;
 import java.io.IOException;
 
 import static utils.ContactFactory.*;
@@ -109,5 +109,63 @@ public class AddNewContactApiTests implements BaseApi, ILogin {
             throw new RuntimeException(e);
         }
         Assert.assertEquals(response.code(), 403);
+    }
+
+    @Test(dataProvider = "wrongContacts", dataProviderClass = ContactDataProvider.class)
+    public void addContactWrongDataNegativeTest(ContactDto contact) {
+        RequestBody requestBody = RequestBody.create(GSON.toJson(contact), JSON);
+        Request request = new Request.Builder()
+                .url(BASE_URL + ADD_CONTACT)
+                .addHeader(AUTH, tokenDto.getToken())
+                .addHeader("Content-Type", "application/json")
+                .post(requestBody)
+                .build();
+        Response response;
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Assert.assertEquals(response.code(), 400);
+    }
+
+    @Test
+    public void addNewContactWrongLinkNegativeTest(){
+        ContactDto contact = positiveContact();
+        System.out.println(contact);
+        System.out.println(tokenDto.getToken());
+        RequestBody requestBody = RequestBody.create(GSON.toJson(contact), JSON);
+        Request request = new Request.Builder()
+                .url(BASE_URL+ADD_CONTACT_WRONG_LINK)
+                .addHeader(AUTH, tokenDto.getToken())
+                .post(requestBody)
+                .build();
+        Response response;
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+        Assert.assertEquals(response.code(), 404);
+    }
+
+    @Test
+    public void addNewContactWrongDataTypeNegativeTest(){
+        ContactDto contact = positiveContact();
+        System.out.println(contact);
+        System.out.println(tokenDto.getToken());
+        RequestBody requestBody = RequestBody.create(GSON.toJson(contact), TEXT);
+        Request request = new Request.Builder()
+                .url(BASE_URL+ADD_CONTACT)
+                .addHeader(AUTH, tokenDto.getToken())
+                .post(requestBody)
+                .build();
+        Response response;
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+        Assert.assertEquals(response.code(), 500);
     }
 }
