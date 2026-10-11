@@ -27,13 +27,14 @@ public class UpdateContactApiTests implements BaseApi, ICreateContact, ILogin {
     public void login() {
         tokenDto = loginGetToken();
         idContact = createContact();
-        System.out.println(idContact);
+        System.out.println(idContact + "id");
     }
 
     @Test
     public void updateContactPositiveTest() {
         ContactDto contact = positiveContact();
         contact.setId(idContact);
+        System.out.println(contact + "in update test");
         RequestBody requestBody =
                 RequestBody.create(GSON.toJson(contact), JSON);
         Request request = new Request.Builder()
@@ -49,4 +50,21 @@ public class UpdateContactApiTests implements BaseApi, ICreateContact, ILogin {
         }
         Assert.assertEquals(response.code(), 200);
     }
+
+    @Test
+    public void deleteContactPositiveTest() {
+        Request request = new Request.Builder()
+                .url(BASE_URL + DELETE_CONTACT + idContact)
+                .addHeader(AUTH, tokenDto.getToken())
+                .delete()
+                .build();
+        Response response;
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Assert.assertEquals(response.code(), 200);
+    }
+
 }

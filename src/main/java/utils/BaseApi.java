@@ -12,6 +12,7 @@ public interface BaseApi {
     String ADD_CONTACT_WRONG_LINK = "/v1/contactss";
     String GET_ALL_CONTACTS = "/v1/contacts";
     String PUT_CONTACT = "/v1/contacts";
+    String DELETE_CONTACT = "/v1/contacts/";
 
     MediaType JSON = MediaType.get("application/json");
     OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
